@@ -9,7 +9,16 @@ import java.util.Optional;
 
 public class MemberService {
 
+    /*
     private final MemberRepository memberRepository = new MemorymemberRepository();
+    기존에는 회원 서비스가 메모리 회원 리포지토리를 직접 생성하게 함
+    밑의 코드로 회원 리포지토리의 코드가 회원 서비스 코드를 DI 가능하게 변경
+     */
+    private final MemberRepository memberRepository;
+    // commend+n
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     /**
      * 회원 가입
