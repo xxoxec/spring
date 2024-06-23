@@ -3,12 +3,14 @@ package hello.hello_spring.service;
 import hello.hello_spring.domain.Member;
 import hello.hello_spring.repository.MemberRepository;
 import hello.hello_spring.repository.MemorymemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberService {
-
     /*
     private final MemberRepository memberRepository = new MemorymemberRepository();
     기존에는 회원 서비스가 메모리 회원 리포지토리를 직접 생성하게 함
@@ -16,6 +18,7 @@ public class MemberService {
      */
     private final MemberRepository memberRepository;
     // commend+n
+    @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
