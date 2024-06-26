@@ -1,10 +1,8 @@
 package hello.hello_spring;
 
-import hello.hello_spring.repository.JdbcMemberRepository;
-import hello.hello_spring.repository.JdbcTemplateMemberRepository;
-import hello.hello_spring.repository.MemberRepository;
-import hello.hello_spring.repository.MemorymemberRepository;
+import hello.hello_spring.repository.*;
 import hello.hello_spring.service.MemberService;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,12 +11,16 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SpringConfig {
-
-    private DataSource dataSource;
+    /*
+    JPA는 기존의 반복 코드는 물론이고, 기본적인 SQL도 JPA가 직접 만들어서 실행
+    JPA를 사용하면, SQL과 데이터 중심의 설계에서 객체 중심의 설계로 패러다임을 전환 할 수 있다
+    JPA를 사용하면 개발 생산성을 크게 높일 수 있다
+     */
+    private EntityManager em;
 
     @Autowired
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public SpringConfig(EntityManager em) {
+        this.em = em;
     }
 
     @Bean
@@ -30,19 +32,12 @@ public class SpringConfig {
     public MemberRepository memberRepository() {
 //        return new MemorymemberRepository();
 //        return new JdbcMemberRepository(dataSource);
-        // JdbcTemplate을 사용하도록 스프링 설정 변경**
-        return  new JdbcTemplateMemberRepository(dataSource);
+        // JdbcTemplate을 사용하도록 스프링 설정 변경
+//        return  new JdbcTemplateMemberRepository(dataSource);
+        // JPA를 사용하도록 스프링 설정 변경
+        return new JpaMemberRepository(em);
     }
 }
 
-/*
-DataSource는 데이터베이스 커넥션을 획득할 때 사용하는 객체다.
-스프링 부트는 데이터베이스 커넥션 정 보를 바탕으로 DataSource를 생성하고 스프링 빈으로 만들어둔다
-그래서 DI를 받을 수 있다.
-
-개방-폐쇄 원칙(OCP, Open-Closed Principle) - 확장에는 열려있고, 수정, 변경에는 닫혀있다.
-스프링의 DI (Dependencies Injection)을 사용하면 기존 코드를 전혀 손대지 않고, 설정만으로 구현 클래스를 변경 할 수 있다.
-데이터를 DB에 저장하므로 스프링 서버를 다시 실행해도 데이터가 안전하게 저장된다.
- */
 
 
