@@ -30,6 +30,7 @@ public class SpringConfig {
     public MemberRepository memberRepository() {
 //        return new MemorymemberRepository();
 //        return new JdbcMemberRepository(dataSource);
+        // JdbcTemplate을 사용하도록 스프링 설정 변경**
         return  new JdbcTemplateMemberRepository(dataSource);
     }
 }
